@@ -55,7 +55,7 @@ bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run
-bindsym Control+space exec --no-startup-id j4-dmenu-desktop --dmenu "dmenu -b -i -nf '#F8F8F2' -nb '#282A36' -sb '#000000' -sf '#F8F8F2' -fn 'monospace-11' -p '  '"
+bindsym $mod+space exec --no-startup-id j4-dmenu-desktop --dmenu "dmenu -b -i -nf '#F8F8F2' -nb '#282A36' -sb '#000000' -sf '#F8F8F2' -fn 'monospace-11' -p '  '"
 
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
@@ -75,7 +75,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+#bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent

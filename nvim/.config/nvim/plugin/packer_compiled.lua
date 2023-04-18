@@ -129,6 +129,21 @@ _G.packer_plugins = {
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
+  ["nvim-dap"] = {
+    loaded = true,
+    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-python"] = {
+    loaded = true,
+    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nvim-dap-python",
+    url = "https://github.com/mfussenegger/nvim-dap-python"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
@@ -138,11 +153,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
-  },
-  ["nyoom.nvim"] = {
-    loaded = true,
-    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/nyoom.nvim",
-    url = "https://github.com/nyoom-engineering/nyoom.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -159,10 +169,10 @@ _G.packer_plugins = {
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["poimandres.nvim"] = {
+  ["refactoring.nvim"] = {
     loaded = true,
-    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/poimandres.nvim",
-    url = "https://github.com/olivercederborg/poimandres.nvim"
+    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/refactoring.nvim",
+    url = "https://github.com/ThePrimeagen/refactoring.nvim"
   },
   ["telescope.nvim"] = {
     loaded = true,
