@@ -22,7 +22,7 @@ return require('packer').startup(function(use)
   use('theprimeagen/harpoon')
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
-  use('rebelot/kanagawa.nvim')
+  --use('rebelot/kanagawa.nvim')
   use('savq/melange-nvim')
   use {
 	  'VonHeikemen/lsp-zero.nvim',
@@ -55,4 +55,5 @@ use 'mfussenegger/nvim-dap'
 use 'mfussenegger/nvim-dap-python'
 use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
 use ( "ldelossa/nvim-dap-projects")
+use 'APZelos/blamer.nvim'
 end)

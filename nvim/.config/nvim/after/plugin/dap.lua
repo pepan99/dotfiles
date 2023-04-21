@@ -22,7 +22,7 @@ vim.keymap.set('n', '<leader>dR',
     function() require "dap".clear_breakpoints() end)
 vim.keymap.set('n', '<leader>de',
     function() require "dap".set_exception_breakpoints({ "all" }) end)
---vim.keymap.set('n', '<leader>da', function() require "debugHelper".attach() end)
+vim.keymap.set('n', '<leader>da', function() require "debugHelper".attach() end)
 --vim.keymap.set('n', '<leader>dA',
     --function() require "debugHelper".attachToRemote() end)
 vim.keymap
