@@ -55,5 +55,5 @@ use 'mfussenegger/nvim-dap'
 use 'mfussenegger/nvim-dap-python'
 use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
 use ( "ldelossa/nvim-dap-projects")
-use 'APZelos/blamer.nvim'
+use 'lewis6991/gitsigns.nvim'
 end)

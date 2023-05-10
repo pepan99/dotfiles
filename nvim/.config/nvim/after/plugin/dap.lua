@@ -13,7 +13,7 @@ vim.keymap.set('n', '<leader>dh',
 --vim.keymap.set('n', '<leader>dH',
     --":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>")
 vim.keymap.set({ 'n', 't' }, '<leader>dp', function() require "dap".step_out() end)
-vim.keymap.set({ 'n', 't' }, '<leader>di', function() require "dap".step_into() end)
+vim.keymap.set({ 'n', 't' }, '<leader>dI', function() require "dap".step_into() end)
 vim.keymap.set({ 'n', 't' }, '<leader>do', function() require "dap".step_over() end)
 vim.keymap.set({ 'n', 't' }, '<leader>ds', function() require "dap".continue() end)
 --vim.keymap.set('n', '<leader>dn', function() require "dap".run_to_cursor() end)

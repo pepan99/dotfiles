@@ -79,11 +79,6 @@ _G.packer_plugins = {
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/LuaSnip",
     url = "https://github.com/L3MON4D3/LuaSnip"
   },
-  ["blamer.nvim"] = {
-    loaded = true,
-    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/blamer.nvim",
-    url = "https://github.com/APZelos/blamer.nvim"
-  },
   catppuccin = {
     loaded = true,
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/catppuccin",
@@ -98,6 +93,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/dracula",
     url = "https://github.com/Mofiqul/dracula.nvim"
+  },
+  ["gitsigns.nvim"] = {
+    loaded = true,
+    path = "/home/pepan/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
+    url = "https://github.com/lewis6991/gitsigns.nvim"
   },
   harpoon = {
     loaded = true,
