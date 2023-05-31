@@ -222,3 +222,5 @@ bindsym $mod+Shift+p exec --no-startup-id maim --select | xclip -selection clipb
 exec_always --no-startup-id picom &
 
 exec --no-startup-id nitrogen --restore
+
+bindsym $mod+Shift+period exec systemctl suspend
