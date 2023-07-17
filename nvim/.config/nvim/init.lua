@@ -7,3 +7,13 @@ table.insert(require('dap').configurations.python, {
   program = '${file}',
   -- ... more options, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
 })
+table.insert(require('dap').configurations.python, {
+  name = 'Python attach',
+  type = 'python',
+  request = 'attach',
+  connect = {
+      port = 5678
+  },
+  justMyCode = false
+  -- ... more options, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
+})
