@@ -26,7 +26,7 @@ vim.keymap.set('n', '<leader>da', function() require "debugHelper".attach() end)
 --vim.keymap.set('n', '<leader>dA',
     --function() require "debugHelper".attachToRemote() end)
 vim.keymap
-    .set('n', '<leader>di', function() require "dap.ui.widgets".hover() end)
+    .set('n', '<leader>dP', function() require "dap.ui.widgets".hover() end)
 vim.keymap.set('n', '<leader>d?', function()
     local widgets = require "dap.ui.widgets";
     widgets.centered_float(widgets.scopes)

@@ -9,7 +9,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
+set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -48,8 +48,8 @@ floating_modifier $mod
 #tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id alacritty
-
+# bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+Return exec --no-startup-id ~/.local/bin/choose-alacritty-config
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -123,9 +123,9 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+u restart
+bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+y exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -164,8 +164,8 @@ bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
 # Backlight
-bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
-bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +20%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 20%-
 
 # change focus
 bindsym $mod+h focus left
@@ -192,7 +192,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+ae split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -215,11 +215,14 @@ bindsym $mod+Shift+p exec --no-startup-id maim --select | xclip -selection clipb
 #bindsym $mod+Shift+p exec grimshot copy area
 
 #Picom
-exec_always --no-startup-id picom &
+exec_always --no-startup-id picom 
 
-exec --no-startup-id nitrogen --restore
+exec --no-startup-id feh --bg-scale /Downloads/gradient.png
 
 bindsym $mod+Shift+period exec systemctl suspend
+bindsym $mod+Shift+comma exec ~/.local/bin/switch-battery-conservation
+
+exec --no-startup-id setxkbmap -option altwin:swap_alt_win
 
 # redshift modes
 bindsym $mod+Shift+n mode "$mode_redshift"
@@ -237,3 +240,5 @@ mode "$mode_redshift" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
+bindsym $mod+r mode "resize"

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+$cons_mode = $(sudo tee /sys/devices/pci0000:00/0000:00:14.3/PNP0C09:00/VPC2004:00/conservation_mode)
+
+if [[ $cons_mode -eq 1 ]]; then
+    echo 0 | sudo tee /sys/devices/pci0000:00/0000:00:14.3/PNP0C09:00/VPC2004:00/conservation_mode
+else
+    echo 1 | sudo tee /sys/devices/pci0000:00/0000:00:14.3/PNP0C09:00/VPC2004:00/conservation_mode
+fi
