@@ -3,3 +3,5 @@
 	name = jkrusina
 [credential]
 	helper = store
+[core]
+	autocrlf = input

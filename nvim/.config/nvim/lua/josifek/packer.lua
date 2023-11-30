@@ -94,12 +94,27 @@ return require('packer').startup(function(use)
         -- Uncomment next line if you want to follow only stable versions
         -- tag = "*"
     }
-    use {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        event = "InsertEnter",
+    -- imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+    -- let g:copilot_no_tab_map = v:true
+    use { "github/copilot.vim",
+        init = function()
+            vim.g.copilot_no_tab_map = true
+        end,
         config = function()
-            require("copilot").setup({})
+            vim.keymap.set('i', '<A-l>', [[copilot#Accept("\<CR>")]], {
+                silent = true,
+                expr = true,
+                script = true,
+                replace_keycodes = false,
+            })
         end,
     }
+    -- use {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = "Copilot",
+    --     event = "InsertEnter",
+    --     config = function()
+    --         require("copilot").setup({})
+    --     end,
+    -- }
 end)
