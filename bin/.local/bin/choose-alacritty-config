@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if xrandr | grep -w "connected" | grep "DP-2\|HDMI-0"; then
-    alacritty --config-file ~/.config/alacritty/alacritty.yml
+    alacritty --config-file ~/.config/alacritty/alacritty.toml
 else
-    alacritty --config-file ~/.config/alacritty/alacritty-no-monitor.yml
+    alacritty --config-file ~/.config/alacritty/alacritty-no-monitor.toml
 fi
 
