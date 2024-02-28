@@ -96,7 +96,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
   ["copilot.vim"] = {
-    config = { "\27LJ\2\n…\1\0\0\6\0\a\0\t6\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\1K\0\1\0\1\0\4\vscript\2\vsilent\2\texpr\2\21replace_keycodes\1\28copilot#Accept(\"\\<CR>\")\n<A-l>\6i\bset\vkeymap\bvim\0" },
+    config = { "\27LJ\2\n…\1\0\0\6\0\a\0\t6\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\1K\0\1\0\1\0\4\texpr\2\vscript\2\21replace_keycodes\1\vsilent\2\28copilot#Accept(\"\\<CR>\")\n<A-l>\6i\bset\vkeymap\bvim\0" },
     loaded = true,
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/copilot.vim",
     url = "https://github.com/github/copilot.vim"
@@ -115,7 +115,7 @@ _G.packer_plugins = {
   harpoon = {
     loaded = true,
     path = "/home/pepan/.local/share/nvim/site/pack/packer/start/harpoon",
-    url = "https://github.com/theprimeagen/harpoon"
+    url = "https://github.com/ThePrimeagen/harpoon"
   },
   ["lsp-zero.nvim"] = {
     loaded = true,
@@ -235,18 +235,18 @@ time([[Config for Comment.nvim]], false)
 time([[Config for nvim-surround]], true)
 try_loadstring("\27LJ\2\n?\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\18nvim-surround\frequire\0", "config", "nvim-surround")
 time([[Config for nvim-surround]], false)
--- Config for: distant.nvim
-time([[Config for distant.nvim]], true)
-try_loadstring("\27LJ\2\nt\0\0\6\0\a\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0006\3\0\0'\5\3\0B\3\2\0029\3\4\3B\3\1\2=\3\6\2B\0\2\1K\0\1\0\6*\1\0\0\17chip_default\21distant.settings\nsetup\fdistant\frequire\0", "config", "distant.nvim")
-time([[Config for distant.nvim]], false)
 -- Config for: neogen
 time([[Config for neogen]], true)
 try_loadstring("\27LJ\2\n8\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\vneogen\frequire\0", "config", "neogen")
 time([[Config for neogen]], false)
 -- Config for: copilot.vim
 time([[Config for copilot.vim]], true)
-try_loadstring("\27LJ\2\n…\1\0\0\6\0\a\0\t6\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\1K\0\1\0\1\0\4\vscript\2\vsilent\2\texpr\2\21replace_keycodes\1\28copilot#Accept(\"\\<CR>\")\n<A-l>\6i\bset\vkeymap\bvim\0", "config", "copilot.vim")
+try_loadstring("\27LJ\2\n…\1\0\0\6\0\a\0\t6\0\0\0009\0\1\0009\0\2\0'\2\3\0'\3\4\0'\4\5\0005\5\6\0B\0\5\1K\0\1\0\1\0\4\texpr\2\vscript\2\21replace_keycodes\1\vsilent\2\28copilot#Accept(\"\\<CR>\")\n<A-l>\6i\bset\vkeymap\bvim\0", "config", "copilot.vim")
 time([[Config for copilot.vim]], false)
+-- Config for: distant.nvim
+time([[Config for distant.nvim]], true)
+try_loadstring("\27LJ\2\nt\0\0\6\0\a\0\r6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\5\0006\3\0\0'\5\3\0B\3\2\0029\3\4\3B\3\1\2=\3\6\2B\0\2\1K\0\1\0\6*\1\0\0\17chip_default\21distant.settings\nsetup\fdistant\frequire\0", "config", "distant.nvim")
+time([[Config for distant.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

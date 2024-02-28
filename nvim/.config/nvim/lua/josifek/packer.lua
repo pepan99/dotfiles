@@ -19,7 +19,12 @@ return require('packer').startup(function(use)
     use 'nvim-treesitter/nvim-treesitter-context'
     use('nvim-treesitter/playground')
 
-    use('theprimeagen/harpoon')
+    use "nvim-lua/plenary.nvim" -- don't forget to add this one if you don't have it yet!
+    use {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        requires = { { "nvim-lua/plenary.nvim" } }
+    }
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
     --use('rebelot/kanagawa.nvim')
@@ -94,11 +99,10 @@ return require('packer').startup(function(use)
         -- Uncomment next line if you want to follow only stable versions
         -- tag = "*"
     }
-    -- imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-    -- let g:copilot_no_tab_map = v:true
     use { "github/copilot.vim",
         init = function()
             vim.g.copilot_no_tab_map = true
+            vim.g.copilot_enabled = false
         end,
         config = function()
             vim.keymap.set('i', '<A-l>', [[copilot#Accept("\<CR>")]], {
@@ -109,12 +113,4 @@ return require('packer').startup(function(use)
             })
         end,
     }
-    -- use {
-    --     "zbirenbaum/copilot.lua",
-    --     cmd = "Copilot",
-    --     event = "InsertEnter",
-    --     config = function()
-    --         require("copilot").setup({})
-    --     end,
-    -- }
 end)
