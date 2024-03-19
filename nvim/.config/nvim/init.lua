@@ -153,6 +153,9 @@ vim.opt.scrolloff = 10
 vim.opt.wrap = false
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "80"
+
+vim.g.have_nerd_font = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -323,7 +326,7 @@ require("lazy").setup({
 			-- Useful for getting pretty icons, but requires special font.
 			--  If you already have a Nerd Font, or terminal set up with fallback fonts
 			--  you can enable this
-			-- { 'nvim-tree/nvim-web-devicons' }
+			{ "nvim-tree/nvim-web-devicons" },
 		},
 		config = function()
 			-- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -375,7 +378,10 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
 			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Git Files(<C-p>)" })
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>ps", builtin.grep_string, { desc = "Grep string(<leader>ps)" })
+			-- vim.keymap.set("n", "<leader>ps", builtin.grep_string, { desc = "Grep string(<leader>ps)" })
+			vim.keymap.set("n", "<leader>ps", function()
+				builtin.grep_string({ search = vim.fn.input("Grep > ") })
+			end)
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
@@ -467,7 +473,6 @@ require("lazy").setup({
 					--  To jump back, press <C-T>.
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
-					-- Find re[S]earch current [W]ordferences for the word under your cursor.
 					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
 					-- Jump to the implementation of the word under your cursor.
@@ -695,7 +700,7 @@ require("lazy").setup({
 					-- Accept ([y]es) the completion.
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
-					["Tab"] = cmp.mapping.confirm({ select = true }),
+					["<Tab>"] = cmp.mapping.confirm({ select = true }),
 
 					-- Manually trigger a completion from nvim-cmp.
 					--  Generally you don't need this, because nvim-cmp will display
@@ -739,12 +744,95 @@ require("lazy").setup({
 		lazy = false, -- make sure we load this during startup if it is your main colorscheme
 		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
+			require("tokyonight").setup({
+				-- your configuration comes here
+				-- or leave it empty to use the default settings
+				style = "moon", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+				transparent = true, -- Enable this to disable setting the background color
+				terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+				styles = {
+					-- Style to be applied to different syntax groups
+					-- Value is any valid attr-list value for `:help nvim_set_hl`
+					comments = { italic = false },
+					keywords = { italic = false },
+					-- Background styles. Can be "dark", "transparent" or "normal"
+					sidebars = "dark", -- style for sidebars, see below
+					floats = "dark", -- style for floating windows
+				},
+			})
 			-- Load the colorscheme here
-			vim.cmd.colorscheme("tokyonight-night")
+			-- vim.cmd.colorscheme("tokyonight")
+			-- vim.cmd("highlight ColorColumn ctermbg=0 guibg=#333333")
 
 			-- You can configure highlights by doing something like
+		end,
+	},
+
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		config = function()
+			require("rose-pine").setup({
+				disable_background = true,
+			})
+
+			-- vim.cmd("colorscheme rose-pine")
 			vim.cmd.hi("Comment gui=none")
 		end,
+	},
+	{
+		{
+			"catppuccin/nvim",
+			name = "catppuccin",
+			priority = 1000,
+			config = function()
+				require("catppuccin").setup({
+					flavour = "macchiato", -- latte, frappe, macchiato, mocha
+					background = { -- :h background
+						light = "latte",
+						dark = "mocha",
+					},
+					transparent_background = true, -- disables setting the background color.
+					show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+					term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+					dim_inactive = {
+						enabled = false, -- dims the background color of inactive window
+						shade = "dark",
+						percentage = 0.15, -- percentage of the shade to apply to the inactive window
+					},
+					no_italic = false, -- Force no italic
+					no_bold = false, -- Force no bold
+					no_underline = false, -- Force no underline
+					styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+						comments = { "italic" }, -- Change the style of comments
+						conditionals = { "italic" },
+						loops = {},
+						functions = {},
+						keywords = {},
+						strings = {},
+						variables = {},
+						numbers = {},
+						booleans = {},
+						properties = {},
+						types = {},
+						operators = {},
+					},
+					color_overrides = {},
+					custom_highlights = {},
+					integrations = {
+						cmp = true,
+						gitsigns = true,
+						nvimtree = true,
+						telescope = true,
+						notify = false,
+						mini = false,
+						-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+					},
+				})
+				vim.cmd("colorscheme catppuccin-macchiato")
+				vim.cmd.hi("Comment gui=none")
+			end,
+		},
 	},
 
 	-- Highlight todo, notes, etc in comments
@@ -853,6 +941,10 @@ require("lazy").setup({
 	},
 
 	{
+		"github/copilot.vim",
+	},
+
+	{
 		{
 			"ThePrimeagen/harpoon",
 			branch = "harpoon2",
@@ -883,6 +975,19 @@ require("lazy").setup({
 				end)
 			end,
 		},
+	},
+
+	{
+		"windwp/nvim-autopairs",
+		-- Optional dependency
+		dependencies = { "hrsh7th/nvim-cmp" },
+		config = function()
+			require("nvim-autopairs").setup({})
+			-- If you want to automatically add `(` after selecting a function or method
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
