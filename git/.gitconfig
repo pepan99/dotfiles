@@ -1,7 +1,8 @@
 [user]
-	email = pepankrusina@gmail.com
+	email = josef.krusina@lifeliqe.com
 	name = jkrusina
 [credential]
 	helper = store
 [core]
 	autocrlf = input
+	editor = nvim

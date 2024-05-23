@@ -617,6 +617,19 @@ require("lazy").setup({
 							capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {}),
 						})
 					end,
+					svelte = function()
+						require("lspconfig")["svelte"].setup({
+							on_attach = function(client, bufnr)
+								vim.api.nvim_create_autocmd("BufWritePost", {
+									pattern = { "*.js", "*.ts" },
+									callback = function(ctx)
+										-- Here use ctx.match instead of ctx.file
+										client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+									end,
+								})
+							end,
+						})
+					end,
 				},
 			})
 		end,
@@ -955,7 +968,7 @@ require("lazy").setup({
 				harpoon:setup()
 
 				vim.keymap.set("n", "<leader>a", function()
-					harpoon:list():append()
+					harpoon:list():add()
 				end)
 				vim.keymap.set("n", "<C-e>", function()
 					harpoon.ui:toggle_quick_menu(harpoon:list())
@@ -989,7 +1002,34 @@ require("lazy").setup({
 			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 		end,
 	},
+	-- tailwind-tools.lua
+	{
+		"luckasRanarison/tailwind-tools.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+	},
+	{
+		"stevearc/oil.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("oil").setup({
+				columns = { "icon" },
+				keymaps = {
+					["<C-h>"] = false,
+					["<C-p>"] = false,
+					["<M-h>"] = "actions.select_split",
+				},
+				view_options = {
+					show_hidden = true,
+				},
+			})
 
+			-- Open parent directory in current window
+			vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+			-- Open parent directory in floating window
+			vim.keymap.set("n", "<space>-", require("oil").toggle_float)
+		end,
+	},
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- put them in the right spots if you want.
