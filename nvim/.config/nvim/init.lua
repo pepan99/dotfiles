@@ -24,8 +24,7 @@ What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
 
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
+  Kickstart.nvim is a starting point for your own configuration. The goal is that you can read every line of code, top-to-bottom, understand
     what your configuration is doing, and modify it to suit your needs.
 
     Once you've done that, you can start exploring, configuring and tinkering to
@@ -940,6 +939,7 @@ require("lazy").setup({
 				end,
 			})
 
+			vim.keymap.set("n", "gU", "<cmd>Gdiffsplit!<CR>")
 			vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
 			vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
 		end,
@@ -1016,6 +1016,7 @@ require("lazy").setup({
 				keymaps = {
 					["<C-h>"] = false,
 					["<C-p>"] = false,
+					["<C-t>"] = false,
 					["<M-h>"] = "actions.select_split",
 				},
 				view_options = {
