@@ -804,7 +804,7 @@ require("lazy").setup({
 						light = "latte",
 						dark = "mocha",
 					},
-					transparent_background = true, -- disables setting the background color.
+					transparent_background = false, -- disables setting the background color.
 					show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
 					term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
 					dim_inactive = {
@@ -841,7 +841,13 @@ require("lazy").setup({
 						-- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
 					},
 				})
-				vim.cmd("colorscheme catppuccin-macchiato")
+				local hour = tonumber(os.date("%H")) -- Get the current hour
+
+				if hour > 18 or hour < 7 then
+					vim.cmd("colorscheme catppuccin-macchiato")
+				else
+					vim.cmd("colorscheme catppuccin-latte")
+				end
 				vim.cmd.hi("Comment gui=none")
 			end,
 		},
