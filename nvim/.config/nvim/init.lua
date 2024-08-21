@@ -886,7 +886,24 @@ require("lazy").setup({
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
 	},
-
+	-- Add nvim-treesitter-context plugin
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		config = function()
+			require("treesitter-context").setup({
+				enable = true,
+				max_lines = 0, -- No limit on the number of lines the context can span
+				min_window_height = 0, -- No minimum window height required for context to be shown
+				line_numbers = true,
+				multiline_threshold = 20, -- Maximum number of lines to show for a single context
+				trim_scope = "outer", -- Trim outer context if the max_lines limit is exceeded
+				mode = "cursor", -- Context is determined by cursor position
+				separator = nil, -- No separator between context and content
+				zindex = 20, -- Z-index of the context window
+				on_attach = nil, -- Function to run when attaching to the buffer
+			})
+		end,
+	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
@@ -901,7 +918,6 @@ require("lazy").setup({
 				highlight = { enable = true },
 				indent = { enable = true },
 			})
-
 			-- There are additional nvim-treesitter modules that you can use to interact
 			-- with nvim-treesitter. You should go explore a few and see what interests you:
 			--
