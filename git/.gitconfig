@@ -6,3 +6,20 @@
 [core]
 	autocrlf = input
 	editor = nvim
+[alias]
+	s = status
+	co = checkout
+	del = branch -D
+	br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+	save = !git add -A && git commit -m 'chore: commit save point
+	undo = reset HEAD~1 --mixed
+	res = !git reset --hard
+	rb = rebase
+	rbc = rebase --continue
+	rba = rebase --abort
+	m = merge
+	done = !git push origin HEAD
+	pf = push --force
+	pu = push -u origin
+	puf = push -f -u origin
+	lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30

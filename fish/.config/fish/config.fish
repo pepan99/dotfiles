@@ -15,3 +15,31 @@ set -x LAUNCH_EDITOR launch_editor_script
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# Set-up icons for files/folders in terminal using eza
+function ls
+  eza -a --icons $argv
+end
+
+function ll
+  eza -al --icons $argv
+end
+
+function lt
+  eza -a --tree --level=1 --icons $argv
+end
+
+function v
+  nvim $argv
+end
+
+function v.
+  nvim . $argv
+end
+
+function tmux-sessionizer
+  ~/.local/bin/tmux-sessionizer $argv
+end
+
+set -Ux DOTNET_ROOT /usr/local/share/dotnet
+set -Ux PATH $DOTNET_ROOT $PATH
