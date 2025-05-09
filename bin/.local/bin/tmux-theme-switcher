@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Detect OS
+OS=$(uname)
+
+if [ "$OS" = "Darwin" ]; then
+    # macOS detection
+    APPEARANCE=$(defaults read -g AppleInterfaceStyle 2>/dev/null)
+    if [ "$APPEARANCE" = "Dark" ]; then
+        THEME="macchiato"  # Dark theme
+    else
+        THEME="latte"  # Light theme
+    fi
+elif [ "$OS" = "Linux" ]; then
+    # Linux detection - using gsettings for GNOME
+    if command -v gsettings >/dev/null 2>&1; then
+        SCHEME=$(gsettings get org.gnome.desktop.interface color-scheme)
+        if [[ "$SCHEME" == *"dark"* ]]; then
+            THEME="macchiato"  # Dark theme
+        else
+            THEME="latte"  # Light theme
+        fi
+    # Add more Linux DE detections here if needed
+    else
+        # Default to dark if we can't detect
+        THEME="macchiato"
+    fi
+else
+    # Default to dark theme if we can't detect OS
+    THEME="macchiato"
+fi
+
+# Update tmux config
+tmux set -g @catppuccin_flavor "$THEME"
+# Reload the theme
+tmux run-shell '~/.config/tmux/plugins/catppuccin/tmux/catppuccin.tmux'
