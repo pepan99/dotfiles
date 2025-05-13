@@ -165,8 +165,16 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+vim.keymap.set("n", "<leader>em", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
+vim.diagnostic.config({
+	virtual_text = true, -- Enable inline diagnostics
+	signs = true, -- Show diagnostic signs in the sign column
+	underline = true, -- Underline the text with an issue
+	update_in_insert = false, -- Don't update diagnostics in insert mode
+	severity_sort = true, -- Sort diagnostics by severity
+})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -904,44 +912,30 @@ require("lazy").setup({
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
 	},
-
-	-- FUGITIVE
+	-- NEOGIT
 	{
-		"tpope/vim-fugitive",
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- required
+			"sindrets/diffview.nvim", -- optional - Diff integration
+
+			-- Only one of these is needed.
+			"nvim-telescope/telescope.nvim", -- optional
+		},
 		config = function()
-			vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+			local neogit = require("neogit")
 
-			local josifek_fugitive = vim.api.nvim_create_augroup("josifek_fugitive", {})
+			vim.keymap.set("n", "<leader>gs", neogit.open, { silent = true, noremap = true })
 
-			local autocmd = vim.api.nvim_create_autocmd
-			autocmd("BufWinEnter", {
-				group = josifek_fugitive,
-				pattern = "*",
-				callback = function()
-					if vim.bo.ft ~= "fugitive" then
-						return
-					end
+			vim.keymap.set("n", "<leader>gc", ":Neogit commit<CR>", { silent = true, noremap = true })
 
-					local bufnr = vim.api.nvim_get_current_buf()
-					local opts = { buffer = bufnr, remap = false }
-					vim.keymap.set("n", "<leader>p", function()
-						vim.cmd.Git("push")
-					end, opts)
+			vim.keymap.set("n", "<leader>gp", ":Neogit pull<CR>", { silent = true, noremap = true })
 
-					-- rebase always
-					vim.keymap.set("n", "<leader>P", function()
-						vim.cmd.Git({ "pull", "--rebase" })
-					end, opts)
+			vim.keymap.set("n", "<leader>gP", ":Neogit push<CR>", { silent = true, noremap = true })
 
-					-- NOTE: It allows me to easily set the branch i am pushing and any tracking
-					-- needed if i did not set the branch up correctly
-					vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts)
-				end,
-			})
+			vim.keymap.set("n", "<leader>gb", ":Telescope git_branches<CR>", { silent = true, noremap = true })
 
-			vim.keymap.set("n", "gU", "<cmd>Gdiffsplit!<CR>")
-			vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
-			vim.keymap.set("n", "gi", "<cmd>diffget //3<CR>")
+			vim.keymap.set("n", "<leader>gB", ":G blame<CR>", { silent = true, noremap = true })
 		end,
 	},
 	-- UNDOTREE
@@ -950,13 +944,6 @@ require("lazy").setup({
 
 		config = function()
 			vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
-		end,
-	},
-
-	{
-		"supermaven-inc/supermaven-nvim",
-		config = function()
-			require("supermaven-nvim").setup({})
 		end,
 	},
 	{
@@ -1024,7 +1011,7 @@ require("lazy").setup({
 				desc = "Notification History",
 			},
 			{
-				"<leader>e",
+				"<leader>ef",
 				function()
 					Snacks.explorer()
 				end,
@@ -1053,13 +1040,6 @@ require("lazy").setup({
 				desc = "Find Files",
 			},
 			{
-				"<leader>fg",
-				function()
-					Snacks.picker.git_files()
-				end,
-				desc = "Find Git Files",
-			},
-			{
 				"<leader>fp",
 				function()
 					Snacks.picker.projects()
@@ -1072,56 +1052,6 @@ require("lazy").setup({
 					Snacks.picker.recent()
 				end,
 				desc = "Recent",
-			},
-			-- git
-			{
-				"<leader>gb",
-				function()
-					Snacks.picker.git_branches()
-				end,
-				desc = "Git Branches",
-			},
-			{
-				"<leader>gl",
-				function()
-					Snacks.picker.git_log()
-				end,
-				desc = "Git Log",
-			},
-			{
-				"<leader>gL",
-				function()
-					Snacks.picker.git_log_line()
-				end,
-				desc = "Git Log Line",
-			},
-			{
-				"<leader>gs",
-				function()
-					Snacks.picker.git_status()
-				end,
-				desc = "Git Status",
-			},
-			{
-				"<leader>gS",
-				function()
-					Snacks.picker.git_stash()
-				end,
-				desc = "Git Stash",
-			},
-			{
-				"<leader>gd",
-				function()
-					Snacks.picker.git_diff()
-				end,
-				desc = "Git Diff (Hunks)",
-			},
-			{
-				"<leader>gf",
-				function()
-					Snacks.picker.git_log_file()
-				end,
-				desc = "Git Log File",
 			},
 			-- Grep
 			{
@@ -1410,13 +1340,13 @@ require("lazy").setup({
 				desc = "Git Browse",
 				mode = { "n", "v" },
 			},
-			{
-				"<leader>gg",
-				function()
-					Snacks.lazygit()
-				end,
-				desc = "Lazygit",
-			},
+			-- {
+			-- 	"<leader>gg",
+			-- 	function()
+			-- 		Snacks.lazygit()
+			-- 	end,
+			-- 	desc = "Lazygit",
+			-- },
 			{
 				"<leader>un",
 				function()
@@ -1647,49 +1577,6 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set("n", "<leader>yw", [["+yiW]])
-
-local function setDark()
-	vim.api.nvim_set_option_value("background", "dark", {})
-	vim.cmd("colorscheme tokyonight-moon")
-end
-
-local function setLight()
-	vim.api.nvim_set_option_value("background", "light", {})
-	vim.cmd("colorscheme github_light_high_contrast")
-end
-
-local function is_background_dark()
-	local bg = vim.opt.background:get()
-	local colorscheme = vim.g.colors_name
-
-	-- Check if it's explicitly set to 'dark'.
-	if bg == "dark" then
-		return true
-	end
-
-	-- Check if it's explicitly set to 'light'.
-	if bg == "light" then
-		return false
-	end
-
-	-- If background is not set explicitly, check the color scheme
-	if colorscheme then
-		-- List of colorschemes known to be light
-		local light_colorschemes = {
-			"github_light_default",
-			"github_light_high_contrast",
-			"github_light_tritanopia",
-		}
-
-		for _, scheme in ipairs(light_colorschemes) do
-			if colorscheme == scheme then
-				return false
-			end
-		end
-	end
-
-	return false
-end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
