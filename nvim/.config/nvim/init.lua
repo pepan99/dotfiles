@@ -529,6 +529,7 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+			-- Configure Language Servers using vim.lsp.config
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 			--
@@ -538,45 +539,83 @@ require("lazy").setup({
 			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-			local servers = {
-				-- clangd = {},
-				-- gopls = {},
-				-- pyright = {},
-				-- rust_analyzer = {},
-				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				--
-				-- Some languages (like typescript) have entire language plugins that can be useful:
-				--    https://github.com/pmizio/typescript-tools.nvim
-				--
-				-- But for many setups, the LSP (`tsserver`) will work just fine
-				-- tsserver = {},
-				--
 
-				lua_ls = {
-					-- cmd = {...},
-					-- filetypes { ...},
-					-- capabilities = {},
-					settings = {
-						Lua = {
-							runtime = { version = "LuaJIT" },
-							workspace = {
-								checkThirdParty = false,
-								-- Tells lua_ls where to find all the Lua files that you have loaded
-								-- for your neovim configuration.
-								library = {
-									"${3rd}/luv/library",
-									unpack(vim.api.nvim_get_runtime_file("", true)),
-								},
-								-- If lua_ls is really slow on your computer, you can try this instead:
-								-- library = { vim.env.VIMRUNTIME },
+			-- Configure lua_ls using the new vim.lsp.config API
+			vim.lsp.config.lua_ls = {
+				cmd = { "lua-language-server" },
+				root_markers = {
+					".luarc.json",
+					".luarc.jsonc",
+					".luacheckrc",
+					".stylua.toml",
+					"stylua.toml",
+					"selene.toml",
+					"selene.yml",
+				},
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						workspace = {
+							checkThirdParty = false,
+							-- Tells lua_ls where to find all the Lua files that you have loaded
+							-- for your neovim configuration.
+							library = {
+								"${3rd}/luv/library",
+								unpack(vim.api.nvim_get_runtime_file("", true)),
 							},
-							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							-- diagnostics = { disable = { 'missing-fields' } },
+							-- If lua_ls is really slow on your computer, you can try this instead:
+							-- library = { vim.env.VIMRUNTIME },
 						},
+						-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+						-- diagnostics = { disable = { 'missing-fields' } },
 					},
 				},
 			}
 
+			-- Configure svelte language server
+			vim.lsp.config.svelte = {
+				cmd = { "svelteserver", "--stdio" },
+				root_markers = { "package.json", "svelte.config.js", "svelte.config.mjs", "svelte.config.cjs" },
+				capabilities = capabilities,
+				on_attach = function(client, bufnr)
+					vim.api.nvim_create_autocmd("BufWritePost", {
+						pattern = { "*.js", "*.ts" },
+						callback = function(ctx)
+							-- Here use ctx.match instead of ctx.file
+							client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+						end,
+					})
+				end,
+			}
+			vim.lsp.config.pyright = {
+				settings = {
+					pyright = {
+						-- Using Ruff's import organizer
+						disableOrganizeImports = true,
+					},
+					python = {
+						analysis = {
+							-- Ignore all files for analysis to exclusively use Ruff for linting
+							ignore = { "*" },
+						},
+					},
+				},
+			}
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client == nil then
+						return
+					end
+					if client.name == "ruff" then
+						-- Disable hover in favor of Pyright
+						client.server_capabilities.hoverProvider = false
+					end
+				end,
+				desc = "LSP: Disable hover capability from Ruff",
+			})
 			-- Ensure the servers and tools above are installed
 			--  To check the current status of installed tools and/or manually install
 			--  other tools, you can run
@@ -587,40 +626,11 @@ require("lazy").setup({
 
 			-- You can add other tools here that you want Mason to install
 			-- for you, so that they are available from within Neovim.
-			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format lua code
-			})
+			local ensure_installed = { "lua_ls", "stylua" }
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						require("lspconfig")[server_name].setup({
-							cmd = server.cmd,
-							settings = server.settings,
-							filetypes = server.filetypes,
-							-- This handles overriding only values explicitly passed
-							-- by the server configuration above. Useful when disabling
-							-- certain features of an LSP (for example, turning off formatting for tsserver)
-							capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {}),
-						})
-					end,
-					svelte = function()
-						require("lspconfig")["svelte"].setup({
-							on_attach = function(client, bufnr)
-								vim.api.nvim_create_autocmd("BufWritePost", {
-									pattern = { "*.js", "*.ts" },
-									callback = function(ctx)
-										-- Here use ctx.match instead of ctx.file
-										client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-									end,
-								})
-							end,
-						})
-					end,
-				},
+				ensure_installed = { "lua_ls" },
 			})
 		end,
 	},
@@ -633,7 +643,20 @@ require("lazy").setup({
 				timeout_ms = 500,
 				lsp_fallback = true,
 			},
+			formatters = {
+				biome = {
+					require_cwd = true,
+				},
+				prettier = {
+					require_cwd = true,
+				},
+			},
 			formatters_by_ft = {
+				javascript = { "biome", "prettier" },
+				javascriptreact = { "biome", "prettier" },
+				typescript = { "biome", "prettier" },
+				typescriptreact = { "biome", "prettier" },
+				json = { "biome", "prettier" },
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
