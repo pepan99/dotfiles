@@ -41,5 +41,13 @@ function tmux-sessionizer
   ~/.local/bin/tmux-sessionizer $argv
 end
 
+function ta
+  tmux a
+end
+
 set -Ux DOTNET_ROOT /usr/local/share/dotnet
 set -Ux PATH $DOTNET_ROOT $PATH
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+set --export --prepend PATH "/Users/josefkrusina/.rd/bin"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
