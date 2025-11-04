@@ -48,6 +48,16 @@ end
 set -Ux DOTNET_ROOT /usr/local/share/dotnet
 set -Ux PATH $DOTNET_ROOT $PATH
 
+# Initialize zoxide (smart cd)
+if command -v zoxide &> /dev/null
+    zoxide init fish | source
+end
+
+# Initialize fzf key bindings
+if command -v fzf &> /dev/null
+    fzf --fish | source
+end
+
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 set --export --prepend PATH "/Users/josefkrusina/.rd/bin"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
